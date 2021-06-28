@@ -5,6 +5,7 @@ import org.awaitility.Awaitility.await
 import org.junit.jupiter.api.Test
 import org.slf4j.LoggerFactory
 import org.springframework.boot.test.context.SpringBootTest
+import reactor.test.StepVerifier
 import java.util.concurrent.atomic.AtomicBoolean
 
 
@@ -23,5 +24,12 @@ internal class ApiWebClientTest() {
         .subscribe()
 
         await().untilTrue(taskDone)
+    }
+
+    @Test
+    fun testStepVerifier() {
+        StepVerifier.create(apiWebClient.getActivity())
+            .expectNextMatches {it.participants >= 1}
+            .verifyComplete()
     }
 }
