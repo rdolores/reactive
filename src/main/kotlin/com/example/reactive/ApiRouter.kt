@@ -9,6 +9,7 @@ import org.springframework.web.reactive.function.server.router
 class ApiRouter {
     @Bean
     fun mainRoute(handler: ApiHandlers) = router {
+            GET("/{num}") { handler.multipleActivityHandler(it) }
             GET("/") { handler.properHandler() }
         }
 }
