@@ -12,4 +12,11 @@ class ApiHandlers(val webClient: ApiWebClient) {
     fun activityHandler() : Mono<ServerResponse> = ok()
         .contentType(MediaType.APPLICATION_JSON)
         .body(BodyInserters.fromPublisher(webClient.getActivity().log(), ActivityModel::class.java))
+
+    fun properHandler() : Mono<ServerResponse> =
+        webClient.getActivity().flatMap {
+            ok().contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(it)
+        }.switchIfEmpty(ServerResponse.notFound().build())
+
 }
